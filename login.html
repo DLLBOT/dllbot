@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+        <link rel="stylesheet" href="css/inbox.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+        <link href="https://unpkg.com/tailwindcss@2.2.7/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="flex justify-center">
+        <div class="mt-16 w-full max-w-xs">
+          <h1 class="text-2xl text-lg font-bold">Admin Login</h1>
+          <form id="login-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+              <label class="block text-gray-700 font-bold mb-2" for="email">
+                Email
+              </label>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Email">
+            </div>
+            <div class="mb-6">
+              <label class="block text-gray-700 font-bold mb-2" for="password">
+                Password
+              </label>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+            </div>
+            <div class="flex items-center justify-between">
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" id="login-btn">
+                Sign In
+              </button>
+              <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+                Forgot Password?
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- The core Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+<!-- Add additional services that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+<script>// Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDUTbev7QPDNszHXnmyPC8r-ILN80aJ38o",
+        authDomain: "dllbot-85934.firebaseapp.com",
+        databaseURL: "https://dllbot-85934-default-rtdb.firebaseio.com",
+        projectId: "dllbot-85934",
+        storageBucket: "dllbot-85934.appspot.com",
+        messagingSenderId: "190659606318",
+        appId: "1:190659606318:web:ba03d32c4059f4fa03acbf",
+        measurementId: "G-MK5RQ5PHHN"
+    };
+    firebase.initializeApp(config);
+    
+    // Login form submission
+    $('#login-btn').on('click', function() {
+  var email = $('#email').val();
+  var password = $('#password').val();
+  
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(user) {
+      // Check if user is an admin
+      var isAdminRef = firebase.firestore().collection('admin').doc(user.user.uid);
+      isAdminRef.get().then(function(doc) {
+        if (doc.exists) {
+          console.log("Successfully logged in!");
+          // Redirect to admin page after successful login
+          window.location.href = 'admin.html';
+        } else {
+          // User is not an admin
+          console.log("Your are not an admin.");
+          firebase.auth().signOut();
+          alert('Error: You are not authorized to access this page.');
+        }
+      }).catch(function(error) {
+        console.log(error);
+        alert('Error: ' + error.message);
+      });
+    })
+    .catch(function(error) {
+      // Handle login errors
+      console.log(error);
+      alert('Error: ' + error.message);
+    });
+});
+
+    </script>
+</html>

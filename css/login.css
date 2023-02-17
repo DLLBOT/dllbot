@@ -1,0 +1,25 @@
+body {
+  background: linear-gradient(-45deg, #181250a9, #250b3ab2, #172538a2, #0807309f), url(img/web_3.png);
+  background-size:  200% 200%;
+  background-repeat: no-repeat;
+  animation: gradient 30s ease infinite;
+  height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 25%;
+  }
+  25%{
+    background-position: 25% 50%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  75%{
+    background-position: 25% 50% ;        
+  }
+  100% {
+    background-position: 25% 0%;
+  }  
+}
